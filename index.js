@@ -4,31 +4,35 @@ const app = express();
 require("dotenv").config();
 const port = process.env.PORT || 5000;
 const cors = require("cors");
-const ObjectId = require("mongodb").ObjectId;
+// const ObjectId = require("mongodb").ObjectId;
 
 //Middlewares
 app.use(cors());
 app.use(express.json());
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.rfhzu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.wnkuo.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
+
+// Routes
+
 async function run() {
   try {
     await client.connect();
-    const dbs = client.db("electroart").collection("electroartCollection");
+    const dbsProducts = client.db("electronicArts").collection("products");
     console.log("db connected");
+    const dbsUser = client.db("electronicArts").collection("user");
 
     app.get("/", (req, res) => {
-      res.send("Server is runningy");
+      res.send("Server is running");
     });
 
     app.get("/allproducts", async (req, res) => {
       const query = {};
-      const cursor = await dbs.find(query).toArray();
+      const cursor = await dbsProducts.find(query).toArray();
       res.send(cursor);
     });
 
