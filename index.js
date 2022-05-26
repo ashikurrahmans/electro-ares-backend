@@ -36,6 +36,11 @@ async function run() {
       res.send(cursor);
     });
 
+    app.get("/users", async (req, res) => {
+      const users = await userCollection.find({}).toArray();
+      res.send(users);
+    });
+
     // Upload Product to DB
   } finally {
     // await client.close();
